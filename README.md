@@ -1,89 +1,161 @@
-#!/bin/bash
-set -e
+# TurtleBot 4 Voice Navigation
 
-echo "========================================"
-echo "TURTLEBOT 4 VOICE NAVIGATION - AUTO RUN"
-echo "========================================"
+Dự án điều hướng TurtleBot 4 bằng giọng nói trên ROS 2 Humble và Gazebo Simulation.
 
-# 1. Source ROS 2 Humble
+Hệ thống hỗ trợ phân vùng bản đồ, nhận diện câu lệnh giọng nói và điều hướng robot đến các khu vực được chỉ định.
+
+## 1. Môi trường
+
+- Ubuntu 22.04
+- ROS 2 Humble
+- TurtleBot 4 Simulation
+- Gazebo
+- Nav2
+- RViz2
+
+## 2. Cấu trúc dự án
+
+```text
+tb4_lab04/
+├── config/       # Các file cấu hình
+├── launch/       # Launch files
+├── maps/         # Bản đồ và dữ liệu phân vùng
+├── rviz/         # Cấu hình RViz
+├── scripts/      # Các chương trình Python và Bash
+├── CMakeLists.txt
+├── package.xml
+└── README.md
+```
+
+## 3. Cài đặt
+
+Tạo workspace:
+
+```bash
+mkdir -p ~/workspaces/tb4_gazebo/src
+cd ~/workspaces/tb4_gazebo/src
+```
+
+Clone repository:
+
+```bash
+git clone https://github.com/VietAnh2904/HRI7-.git tb4_lab04
+```
+
+Build package:
+
+```bash
+cd ~/workspaces/tb4_gazebo
+
 source /opt/ros/humble/setup.bash
 
-# 2. Tạo workspace và clone (nếu chưa có)
-WS="$HOME/workspaces/tb4_gazebo"
-SRC="$WS/src"
-PKG="$SRC/tb4_lab04"
-
-mkdir -p "$SRC"
-cd "$SRC"
-
-if [ ! -d "$PKG" ]; then
-    echo "[+] Cloning repository..."
-    git clone https://github.com/VietAnh2904/HRI7-.git tb4_lab04
-fi
-
-cd "$WS"
-
-# 3. Build package
-echo "[+] Building with colcon..."
-source /opt/ros/humble/setup.bash
 colcon build --symlink-install --packages-select tb4_lab04
-source install/setup.bash
-export ROS_LOCALHOST_ONLY=1
 
-# 4. Cài dependencies giọng nói
-echo "[+] Installing voice dependencies..."
-cd "$PKG"
+source install/setup.bash
+```
+
+Cài đặt các thư viện phục vụ nhận diện giọng nói:
+
+```bash
+cd ~/workspaces/tb4_gazebo/src/tb4_lab04
+
 bash scripts/install_voice_deps.sh
+```
 
-# 5. Chạy phân vùng bản đồ (1 lần)
-echo "[+] Running zone segmentation..."
-cd "$WS"
-source install/setup.bash
+## 4. Phân vùng bản đồ
+
+Sau khi build và cài đặt dependencies, chạy:
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/workspaces/tb4_gazebo/install/setup.bash
+
 export ROS_LOCALHOST_ONLY=1
-ros2 run tb4_lab04 zone_segmentation.py
 
-echo ""
-echo "========================================"
-echo "SETUP HOAN TAT"
-echo "========================================"
-echo ""
-echo "MOI BAO MO 3 TERMINAL MOI VA CHAY CAC LENH DUOI DAY:"
-echo ""
-echo "---------------- Terminal 1 ----------------"
-echo "# Gazebo + Nav2 + RViz"
-echo "source /opt/ros/humble/setup.bash"
-echo "source $WS/install/setup.bash"
-echo "export ROS_LOCALHOST_ONLY=1"
-echo "cd $WS"
-echo "ros2 run tb4_lab04 kill_sim.sh"
-echo "ros2 launch tb4_lab04 navigation.launch.py rviz_config:=\$(ros2 pkg prefix tb4_lab04)/share/tb4_lab04/rviz/voice.rviz"
-echo ""
-echo "=> Choi den khi in 2 lan 'Managed nodes are active'"
-echo ""
-echo "---------------- Terminal 2 ----------------"
-echo "# Giong noi + Dieu huong"
-echo "source /opt/ros/humble/setup.bash"
-echo "source $WS/install/setup.bash"
-echo "export ROS_LOCALHOST_ONLY=1"
-echo "ros2 launch tb4_lab04 voice.launch.py"
-echo ""
-echo "=> Choi den khi in 'San sang nhan lenh' va 'Dang nghe micro ...'"
-echo ""
-echo "---------------- Terminal 3 ----------------"
-echo "# Xem phan hoi robot (tuychon)"
-echo "source /opt/ros/humble/setup.bash"
-echo "source $WS/install/setup.bash"
-echo "export ROS_LOCALHOST_ONLY=1"
-echo "ros2 topic echo /voice/feedback"
-echo ""
-echo "---------------- LENH MAU (noi vao micro) ----------------"
-echo "1. 'Di den khu vuc G.'"
-echo "2. 'Di den khu vuc Z.'  (khu vuc khong ton tai -> robot dung yen)"
-echo "3. 'Di chuyen tu sanh chinh den khu vuc C.'"
-echo "4. 'Di den phong thuc nghiem.'"
-echo ""
-echo "---------------- KHONG CO MIC ----------------"
-echo "Go lenh thay cho noi:"
-echo "ros2 run tb4_lab04 voice_keyboard.py \"Di den khu vuc G\""
-echo ""
-echo "========================================"
+ros2 run tb4_lab04 zone_segmentation.py
+```
+
+## 5. Khởi chạy hệ thống
+
+Mở 3 Terminal riêng biệt.
+
+### Terminal 1: Gazebo, Nav2 và RViz
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/workspaces/tb4_gazebo/install/setup.bash
+
+export ROS_LOCALHOST_ONLY=1
+
+cd ~/workspaces/tb4_gazebo
+
+ros2 run tb4_lab04 kill_sim.sh
+
+ros2 launch tb4_lab04 navigation.launch.py rviz_config:=$(ros2 pkg prefix tb4_lab04)/share/tb4_lab04/rviz/voice.rviz
+```
+
+Chờ Nav2 khởi động hoàn tất.
+
+### Terminal 2: Nhận diện giọng nói và điều hướng
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/workspaces/tb4_gazebo/install/setup.bash
+
+export ROS_LOCALHOST_ONLY=1
+
+ros2 launch tb4_lab04 voice.launch.py
+```
+
+Chờ hệ thống hiển thị:
+
+- San sang nhan lenh
+- Dang nghe micro ...
+
+### Terminal 3: Theo dõi phản hồi
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/workspaces/tb4_gazebo/install/setup.bash
+
+export ROS_LOCALHOST_ONLY=1
+
+ros2 topic echo /voice/feedback
+```
+
+## 6. Các câu lệnh điều khiển mẫu
+
+Nói trực tiếp vào microphone:
+
+| STT | Câu lệnh |
+|---|---|
+| 1 | Đi đến khu vực G |
+| 2 | Đi đến khu vực Z |
+| 3 | Di chuyển từ sảnh chính đến khu vực C |
+| 4 | Đi đến phòng thí nghiệm |
+
+Khu vực Z là ví dụ về vị trí không tồn tại trong bản đồ, dùng để kiểm tra khả năng xử lý địa điểm không hợp lệ.
+
+## 7. Điều khiển không cần microphone
+
+Có thể nhập câu lệnh trực tiếp bằng bàn phím:
+
+```bash
+ros2 run tb4_lab04 voice_keyboard.py "Di den khu vuc G"
+```
+
+## 8. Khởi chạy tự động
+
+Repository có thể sử dụng script `setup_voice_navigation.sh` để tự động thực hiện các bước:
+
+1. Source ROS 2 Humble.
+2. Tạo workspace và clone repository.
+3. Build package bằng colcon.
+4. Cài đặt dependencies giọng nói.
+5. Chạy chương trình phân vùng bản đồ.
+
+Chạy bằng lệnh:
+
+```bash
+bash setup_voice_navigation.sh
+```
