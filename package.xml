@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>tb4_lab04</name>
+  <version>4.0.0</version>
+  <description>
+    TurtleBot 4 Simulation (ROS 2 Humble + Ignition Gazebo Fortress). Bài 6: giao tiếp phi ngôn ngữ – nhận diện
+    cử chỉ tay từ webcam (OpenCV + MediaPipe Gesture Recognizer) và điều khiển hành vi robot qua /cmd_vel.
+    Bài 7: phân vùng bản đồ (OpenCV watershed) + nhận dạng giọng nói (Vosk/Whisper) + điều hướng Nav2
+    theo câu lệnh tiếng Việt.
+    Các bài trước: SLAM Toolbox, AMCL, Nav2 (nav2_simple_commander) và nhận diện vật thể YOLO.
+  </description>
+  <maintainer email="student@example.com">Sinh vien</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- Mô phỏng TurtleBot 4 (Ignition Gazebo Fortress) -->
+  <exec_depend>turtlebot4_simulator</exec_depend>
+  <exec_depend>turtlebot4_ignition_bringup</exec_depend>
+  <exec_depend>irobot_create_nodes</exec_depend>
+  <exec_depend>irobot_create_msgs</exec_depend>
+
+  <!-- SLAM, localization, navigation -->
+  <exec_depend>turtlebot4_navigation</exec_depend>
+  <exec_depend>slam_toolbox</exec_depend>
+  <exec_depend>nav2_bringup</exec_depend>
+  <exec_depend>nav2_map_server</exec_depend>
+  <exec_depend>nav2_amcl</exec_depend>
+  <exec_depend>nav2_msgs</exec_depend>
+  <exec_depend>nav2_simple_commander</exec_depend>
+  <exec_depend>lifecycle_msgs</exec_depend>
+
+  <!-- Vật thể trong Gazebo + nhận diện YOLO (ultralytics cài bằng pip – xem README) -->
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>cv_bridge</exec_depend>
+  <exec_depend>vision_msgs</exec_depend>
+  <exec_depend>visualization_msgs</exec_depend>
+  <exec_depend>python3-matplotlib</exec_depend>
+
+  <!-- Bài 6 – cử chỉ tay (OpenCV + MediaPipe cài bằng pip: scripts/install_gesture_deps.sh) -->
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>rcl_interfaces</exec_depend>
+
+  <!-- Bài 7 – phân vùng bản đồ + giọng nói (Vosk / Whisper / sounddevice cài bằng pip:
+       scripts/install_voice_deps.sh) -->
+  <exec_depend>python3-opencv</exec_depend>
+
+  <!-- Hiển thị và điều khiển -->
+  <exec_depend>rviz2</exec_depend>
+  <exec_depend>nav2_rviz_plugins</exec_depend>
+  <exec_depend>turtlebot4_viz</exec_depend>
+  <exec_depend>teleop_twist_keyboard</exec_depend>
+  <exec_depend>topic_tools</exec_depend>
+
+  <!-- Dùng trong launch và script -->
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>tf2_ros_py</exec_depend>
+  <exec_depend>tf2_msgs</exec_depend>
+  <exec_depend>action_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>sensor_msgs_py</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>rosgraph_msgs</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

@@ -1,0 +1,16 @@
+# Bài 7 – bộ câu lệnh để đo độ chính xác nhận dạng giọng nói (scripts/asr_benchmark.py).
+# expect: navigate | invalid | stop | list | where;  start: ID khu vực xuất phát (hoặc bỏ);  targets: [ID ...]
+# Khu vực theo maps/zones.yaml của repo (A Phòng học, B Hành lang, F Sảnh chính, H Phòng hội nghị,
+# I Phòng thí nghiệm, K Thư viện ...). Sửa lại nếu bạn đổi bản đồ / tên khu vực.
+
+sentences:
+  - {text: "Đi đến khu vực A.",                                  expect: navigate, targets: [A]}
+  - {text: "Di chuyển từ khu vực A đến khu vực B.",              expect: navigate, start: A, targets: [B]}
+  - {text: "Đi đến phòng thí nghiệm.",                           expect: navigate, targets: [I]}
+  - {text: "Đi đến khu vực Z.",                                  expect: invalid}
+  - {text: "Đi đến phòng học.",                                  expect: navigate, targets: [A]}
+  - {text: "Đi đến sảnh chính.",                                 expect: navigate, targets: [F]}
+  - {text: "Dừng lại.",                                          expect: stop}
+  - {text: "Đi từ phòng học qua hành lang rồi đến thư viện.",    expect: navigate, start: A, targets: [B, K]}
+  - {text: "Đi đến phòng hội nghị.",                             expect: navigate, targets: [H]}
+  - {text: "Đi đến khu vực G.",                                  expect: navigate, targets: [G]}

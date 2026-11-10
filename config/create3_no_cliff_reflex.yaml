@@ -1,0 +1,16 @@
+# tb4_lab04: tham số an toàn của Create 3 (node motion_control) cho mô phỏng – áp khi cliff_reflex:=false
+# (mặc định). Phải đặt LÚC KHỞI ĐỘNG; khoá /**/motion_control nên chỉ node đó đọc file này.
+#
+# 1) Tắt RIÊNG phản xạ cliff (chống rơi): world mê cung phẳng, không có chỗ hụt chân; còn 4 cảm biến cliff
+#    là gpu_lidar (đo bằng render đồ hoạ) – driver đồ hoạ lỗi làm chúng báo "hụt chân" liên tục -> phản xạ
+#    huỷ undock (CANCELED) và Create 3 bỏ qua /cmd_vel. Phản xạ bumper vẫn bật.
+# 2) safety_override: backup_only – bỏ giới hạn "chỉ được lùi ~0.15 m" (Create 3 không có cảm biến cliff
+#    phía sau; world phẳng nên không cần). Không có dòng này, khi robot tì sát tường: bumper bị ép ->
+#    phản xạ lùi -> chạm giới hạn lùi ("Reached backup limit!") -> motion_control đặt CẢ vận tốc thẳng lẫn
+#    quay về 0 -> robot đứng im mãi trong khi Nav2 vẫn gửi đường đi ("Passing new path to controller").
+#    Tốc độ tối đa vẫn 0.306 m/s như mặc định (chỉ "full" mới tăng tốc độ).
+/**/motion_control:
+  ros__parameters:
+    safety_override: "backup_only"
+    reflexes:
+      REFLEX_CLIFF: false

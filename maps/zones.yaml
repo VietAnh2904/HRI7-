@@ -1,0 +1,356 @@
+# Sinh tự động bởi scripts/zone_segmentation.py – đừng sửa tay toạ độ ở đây.
+# Đổi TÊN khu vực: sửa config/zone_names.yaml rồi chạy lại zone_segmentation.py.
+# goal.yaw = null -> voice_navigator tự chọn hướng = hướng di chuyển tới điểm đích.
+map: map.yaml
+labels_image: zones_labels.pgm
+resolution: 0.05
+origin: [-10.0, -10.1, 0.0]
+frame_id: map
+method: persistence_watershed
+start: [0.0, 0.0]
+params: {merge_ratio: 0.7, persistence: 0.3, min_peak: 0.35, min_area: 5.0, min_clearance: 0.5, open_px: 3.0}
+zones:
+- id: A
+  name: Phòng học
+  aliases: [lớp học, phòng lớp]
+  center: [-6.265, 7.852]
+  goal: {x: -6.275, y: 7.875, yaw: null}
+  valid: true
+  area_m2: 32.96
+  width_m: 4.9
+  neighbors: [F]
+  goal_clearance_m: 1.39
+  goal_object_distance_m: 1.3
+  path_from_start_m: 10.69
+  polygons:
+  - - [-9.875, 5.175]
+    - [-9.775, 9.975]
+    - [-0.925, 9.875]
+    - [-0.975, 8.025]
+    - [-4.925, 8.025]
+    - [-4.925, 6.975]
+    - [-3.725, 6.975]
+    - [-4.975, 5.675]
+    - [-4.975, 5.075]
+- id: B
+  name: Hành lang
+  aliases: [hành lang chéo, hành lang trên]
+  center: [6.786, 7.658]
+  goal: {x: 7.125, y: 7.875, yaw: null}
+  valid: true
+  area_m2: 13.92
+  width_m: 2.3
+  neighbors: [C]
+  goal_clearance_m: 0.95
+  goal_object_distance_m: 8.76
+  path_from_start_m: 11.08
+  polygons:
+  - - [4.175, 5.975]
+    - [4.225, 7.875]
+    - [6.175, 7.925]
+    - [6.225, 8.875]
+    - [7.175, 8.875]
+    - [7.275, 9.875]
+    - [9.925, 9.875]
+    - [10.125, 9.775]
+    - [10.075, 8.975]
+    - [9.125, 8.925]
+    - [9.075, 7.975]
+    - [8.125, 7.925]
+    - [8.025, 6.975]
+    - [7.075, 6.925]
+    - [7.025, 6.025]
+    - [6.075, 5.975]
+    - [6.025, 5.025]
+    - [5.125, 5.025]
+- id: C
+  name: Khu vực C
+  aliases: []
+  center: [2.978, 3.399]
+  goal: {x: 2.975, y: 3.375, yaw: null}
+  valid: true
+  area_m2: 13.66
+  width_m: 3.0
+  neighbors: [B, D, G]
+  goal_clearance_m: 1.1
+  goal_object_distance_m: 6.66
+  path_from_start_m: 4.86
+  polygons:
+  - - [2.425, 0.975]
+    - [1.125, 2.225]
+    - [1.175, 4.875]
+    - [3.075, 4.925]
+    - [3.175, 5.025]
+    - [3.225, 5.925]
+    - [4.175, 5.925]
+    - [5.075, 5.025]
+    - [5.025, 4.025]
+    - [4.025, 3.975]
+    - [4.025, 1.975]
+    - [4.675, 1.925]
+    - [4.275, 1.525]
+    - [4.275, 1.075]
+- id: D
+  name: Khu vực D
+  aliases: []
+  center: [8.038, 3.261]
+  goal: {x: 8.375, y: 3.925, yaw: null}
+  valid: true
+  area_m2: 17.97
+  width_m: 2.48
+  neighbors: [C]
+  goal_clearance_m: 1.0
+  goal_object_distance_m: 4.7
+  path_from_start_m: 9.99
+  polygons:
+  - - [4.375, 1.025]
+    - [4.325, 1.525]
+    - [4.725, 1.925]
+    - [5.125, 1.975]
+    - [5.125, 2.875]
+    - [6.125, 2.925]
+    - [6.175, 3.875]
+    - [7.125, 3.925]
+    - [7.175, 4.875]
+    - [8.125, 4.875]
+    - [8.175, 5.825]
+    - [9.125, 5.875]
+    - [9.175, 6.825]
+    - [10.025, 6.875]
+    - [10.025, 1.025]
+    - [8.125, 1.025]
+    - [8.175, 2.925]
+    - [8.075, 3.025]
+    - [7.125, 3.025]
+    - [7.025, 2.925]
+    - [6.975, 1.025]
+- id: E
+  name: Khu vực E
+  aliases: []
+  center: [-8.089, 2.189]
+  goal: {x: -8.075, y: 2.175, yaw: null}
+  valid: true
+  area_m2: 13.69
+  width_m: 3.04
+  neighbors: [F, I]
+  goal_clearance_m: 1.16
+  goal_object_distance_m: 3.3
+  path_from_start_m: 9.09
+  polygons:
+  - - [-5.125, 2.075]
+    - [-6.925, 2.075]
+    - [-6.975, 0.675]
+    - [-7.675, 0.025]
+    - [-9.875, 0.125]
+    - [-9.875, 3.075]
+    - [-9.775, 3.975]
+    - [-6.075, 3.975]
+    - [-6.025, 2.975]
+- id: F
+  name: Sảnh chính
+  aliases: [sảnh, trạm sạc, chỗ sạc, vị trí xuất phát]
+  center: [-2.509, 1.168]
+  goal: {x: -2.525, y: 1.175, yaw: null}
+  valid: true
+  area_m2: 47.66
+  width_m: 4.21
+  neighbors: [A, E, G, I, K]
+  goal_clearance_m: 1.6
+  goal_object_distance_m: 1.56
+  path_from_start_m: 3.05
+  polygons:
+  - - [0.975, -4.925]
+    - [0.125, -4.875]
+    - [0.075, -3.925]
+    - [-0.925, -3.925]
+    - [-0.975, -5.175]
+    - [-1.975, -5.225]
+    - [-2.875, -4.325]
+    - [-2.925, -3.675]
+    - [-3.925, -2.625]
+    - [-3.875, -0.975]
+    - [-4.275, -0.925]
+    - [-4.925, -0.225]
+    - [-4.875, 2.025]
+    - [-5.075, 2.075]
+    - [-5.975, 2.975]
+    - [-5.975, 3.975]
+    - [-4.875, 4.025]
+    - [-4.925, 5.675]
+    - [-3.675, 6.975]
+    - [-0.975, 6.875]
+    - [-0.975, 1.025]
+    - [-0.875, 0.925]
+    - [0.925, 0.925]
+    - [0.025, 0.025]
+    - [0.025, -0.925]
+    - [-0.975, -0.975]
+    - [-0.975, -2.975]
+    - [0.975, -3.025]
+    - [1.025, -3.525]
+    - [1.425, -3.925]
+    - [1.025, -3.975]
+- id: G
+  name: Khu vực G
+  aliases: []
+  center: [1.931, -1.325]
+  goal: {x: 1.925, y: -1.325, yaw: null}
+  valid: true
+  area_m2: 14.41
+  width_m: 3.07
+  neighbors: [C, F, H]
+  goal_clearance_m: 1.07
+  goal_object_distance_m: 6.45
+  path_from_start_m: 2.44
+  polygons:
+  - - [3.675, -3.925]
+    - [1.475, -3.925]
+    - [1.075, -3.525]
+    - [1.125, -1.975]
+    - [0.125, -1.875]
+    - [0.075, 0.025]
+    - [1.125, 1.025]
+    - [1.125, 2.175]
+    - [2.425, 0.925]
+    - [3.025, 0.925]
+    - [3.025, -2.025]
+    - [4.025, -2.075]
+    - [4.025, -2.625]
+    - [3.675, -2.975]
+- id: H
+  name: Phòng hội nghị
+  aliases: [phòng hội thảo, hội trường]
+  center: [6.974, -2.228]
+  goal: {x: 6.975, y: -2.225, yaw: null}
+  valid: true
+  area_m2: 25.87
+  width_m: 4.0
+  neighbors: [G]
+  goal_clearance_m: 1.8
+  goal_object_distance_m: 1.52
+  path_from_start_m: 7.9
+  polygons:
+  - - [4.125, -4.925]
+    - [4.125, -4.025]
+    - [3.725, -3.925]
+    - [3.725, -2.975]
+    - [4.075, -2.625]
+    - [4.175, -0.075]
+    - [10.025, -0.125]
+    - [10.025, -3.925]
+    - [9.075, -3.975]
+    - [8.975, -4.975]
+    - [8.225, -4.925]
+    - [8.075, -3.975]
+    - [5.075, -3.975]
+    - [5.025, -4.925]
+- id: I
+  name: Phòng thí nghiệm
+  aliases: [phòng lab, phòng thực hành, lab]
+  center: [-6.338, -4.379]
+  goal: {x: -6.325, y: -4.375, yaw: null}
+  valid: true
+  area_m2: 38.97
+  width_m: 4.0
+  neighbors: [E, F, J]
+  goal_clearance_m: 1.65
+  goal_object_distance_m: 0.98
+  path_from_start_m: 8.15
+  polygons:
+  - - [-4.075, -9.925]
+    - [-5.825, -9.925]
+    - [-5.925, -9.825]
+    - [-5.925, -7.975]
+    - [-6.275, -7.925]
+    - [-6.925, -7.225]
+    - [-6.925, -5.925]
+    - [-9.875, -5.875]
+    - [-9.875, -1.075]
+    - [-8.975, -1.075]
+    - [-8.975, -3.975]
+    - [-7.925, -4.025]
+    - [-7.875, -0.025]
+    - [-7.675, -0.025]
+    - [-6.975, 0.625]
+    - [-6.925, -0.025]
+    - [-4.975, -0.025]
+    - [-4.975, -0.225]
+    - [-4.325, -0.925]
+    - [-4.975, -0.975]
+    - [-4.975, -1.975]
+    - [-3.975, -2.025]
+    - [-3.975, -2.625]
+    - [-2.975, -3.675]
+    - [-2.975, -3.925]
+    - [-3.975, -3.975]
+- id: J
+  name: Khu vực J
+  aliases: []
+  center: [-8.385, -8.455]
+  goal: {x: -8.375, y: -8.475, yaw: null}
+  valid: true
+  area_m2: 8.9
+  width_m: 2.9
+  neighbors: [I]
+  goal_clearance_m: 1.4
+  goal_object_distance_m: 3.44
+  path_from_start_m: 12.37
+  polygons:
+  - - [-9.825, -9.925]
+    - [-9.875, -7.075]
+    - [-6.975, -7.025]
+    - [-6.975, -7.225]
+    - [-6.325, -7.925]
+    - [-7.025, -7.975]
+    - [-6.975, -9.875]
+- id: K
+  name: Thư viện
+  aliases: [phòng đọc, phòng đọc sách]
+  center: [-0.088, -7.575]
+  goal: {x: -0.075, y: -7.575, yaw: null}
+  valid: true
+  area_m2: 24.97
+  width_m: 4.0
+  neighbors: [F, L]
+  goal_clearance_m: 1.55
+  goal_object_distance_m: 4.87
+  path_from_start_m: 8.78
+  polygons:
+  - - [-2.875, -9.875]
+    - [-2.875, -4.375]
+    - [-1.975, -5.275]
+    - [-1.025, -5.275]
+    - [-0.925, -6.025]
+    - [2.075, -6.075]
+    - [2.125, -5.125]
+    - [2.975, -5.075]
+    - [3.075, -6.075]
+    - [4.275, -6.075]
+    - [3.025, -7.375]
+    - [3.025, -7.975]
+    - [2.025, -8.025]
+    - [1.925, -9.925]
+- id: L
+  name: Khu vực L
+  aliases: []
+  center: [6.614, -7.938]
+  goal: {x: 6.625, y: -7.025, yaw: null}
+  valid: true
+  area_m2: 25.46
+  width_m: 3.1
+  neighbors: [K]
+  goal_clearance_m: 1.0
+  goal_object_distance_m: 3.89
+  path_from_start_m: 15.05
+  polygons:
+  - - [3.125, -9.925]
+    - [3.075, -7.375]
+    - [4.325, -6.075]
+    - [6.075, -6.075]
+    - [6.125, -5.125]
+    - [6.975, -5.075]
+    - [7.075, -6.075]
+    - [9.475, -6.075]
+    - [10.025, -6.175]
+    - [10.025, -9.625]
+    - [9.925, -9.975]

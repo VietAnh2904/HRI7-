@@ -1,0 +1,75 @@
+# Vật thể thêm vào world "maze" (Phần 1 của bài) – spawn LÚC CHẠY bằng scripts/spawn_objects.py.
+#
+# Vì sao không tạo file world mới (maze_objects.sdf)? Launch chính thức turtlebot4_ignition_bringup
+# GHI ĐÈ biến IGN_GAZEBO_RESOURCE_PATH và dùng tên world trong topic của ros_gz_bridge
+# (/world/<world>/model/...). World mới phải nằm trong thư mục của gói turtlebot4 và đổi tên world ->
+# dễ hỏng bridge, và không còn là "đúng môi trường tuần trước". Spawn thêm vật thể vào world maze gốc
+# giữ nguyên tường, nguyên vị trí robot/dock -> bản đồ tuần trước dùng lại được.
+#
+# Model lấy từ Gazebo Fuel (cần Internet LẦN ĐẦU; sau đó nằm trong cache ~/.ignition/fuel).
+# Tải trước:  ros2 run tb4_lab04 spawn_objects.py --download-only
+#
+# Toạ độ trong frame của world Gazebo = frame map của bản đồ tuần trước (robot spawn tại (0, 0, 0)).
+# yaw: rad. footprint: hình chiếu xuống sàn (m) trong frame của model – CHỈ dùng cho
+# check_goals.py (kiểm tra goal/đường đi không bị vật thể chặn, camera nhìn thấy vật thể);
+# Gazebo dùng hình dạng thật của model.
+# coco: tên lớp COCO mà YOLO (yolo11n.pt / yolov8n.pt) kỳ vọng nhận ra; null = COCO không có lớp
+# này (chỉ YOLO-World với danh sách lớp tự đặt mới nhận được – xem config/yolo.yaml).
+
+world: maze
+objects:
+  - name: car_1
+    uri: https://fuel.gazebosim.org/1.0/OpenRobotics/models/Hatchback blue
+    x: -8.70
+    y: 7.20
+    yaw: 1.5708
+    footprint: {box: [-1.75, 2.45, -1.15, 1.15]}   # dài ~4.0 m, rộng ~2.1 m (tính cả gương)
+    coco: car
+
+  - name: person_1
+    uri: https://fuel.gazebosim.org/1.0/OpenRobotics/models/Standing person
+    x: -3.90
+    y: 2.40
+    yaw: -0.5
+    footprint: {radius: 0.30}
+    coco: person
+
+  - name: person_2
+    uri: https://fuel.gazebosim.org/1.0/OpenRobotics/models/Casual female
+    x: -6.00
+    y: -5.60
+    yaw: 1.5708
+    footprint: {radius: 0.30}
+    coco: person
+
+  - name: chair_1
+    uri: https://fuel.gazebosim.org/1.0/OpenRobotics/models/Chair
+    x: -4.75
+    y: -5.25
+    yaw: 2.4
+    footprint: {radius: 0.35}
+    coco: chair
+
+  - name: fire_hydrant_1
+    uri: https://fuel.gazebosim.org/1.0/OpenRobotics/models/Fire hydrant
+    x: 8.60
+    y: -1.00
+    yaw: 3.1416
+    footprint: {radius: 0.25}
+    coco: fire hydrant
+
+  - name: person_3
+    uri: https://fuel.gazebosim.org/1.0/OpenRobotics/models/Male visitor
+    x: 9.00
+    y: -2.60
+    yaw: 3.1416
+    footprint: {radius: 0.30}
+    coco: person
+
+  - name: fire_extinguisher_1
+    uri: https://fuel.gazebosim.org/1.0/OpenRobotics/models/Fire Extinguisher
+    x: 8.30
+    y: -3.30
+    yaw: 3.1416
+    footprint: {radius: 0.20}
+    coco: null      # COCO không có lớp "bình chữa cháy" -> dùng YOLO-World để nhận

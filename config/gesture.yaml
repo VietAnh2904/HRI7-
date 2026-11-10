@@ -1,0 +1,82 @@
+# Bài 6 – tham số của 2 node cử chỉ (gesture.launch.py nạp file này).
+# Sửa xong chạy lại launch là có hiệu lực (colcon build --symlink-install).
+
+gesture_recognition_node:
+  ros__parameters:
+    # ---- nguồn ảnh
+    camera_source: "0"          # "0" = webcam laptop, "1" = webcam USB, hoặc /dev/video2, file video, thư mục ảnh
+    frame_width: 640
+    frame_height: 480
+    camera_fps: 30
+    camera_fourcc: ""           # "MJPG" nếu webcam chỉ đạt 10-15 FPS (nhiều webcam cần MJPG để có 30 FPS)
+    mirror: true                # lật gương: đưa tay sang phải thì ảnh cũng sang phải
+    loop: false                 # nguồn là video/thư mục ảnh: phát lặp lại
+    image_hold: 2.0             # nguồn là thư mục ảnh: số giây hiển thị mỗi ảnh
+    max_fps: 30.0               # giới hạn số khung xử lý mỗi giây (máy yếu: 15)
+    # ---- MediaPipe Gesture Recognizer
+    model_path: ""              # trống = models/gesture_recognizer.task của repo (tự tải nếu thiếu)
+    num_hands: 1
+    min_hand_detection_confidence: 0.5
+    min_hand_presence_confidence: 0.5
+    min_tracking_confidence: 0.5
+    min_score: 0.55             # độ tin cậy tối thiểu của cử chỉ trong 1 khung (thấp hơn -> None)
+    # ---- chống nhiễu (GestureStabilizer: bỏ phiếu trong cửa sổ thời gian)
+    hold_time: 0.5              # s phải giữ cử chỉ (chọn / xác nhận / huỷ)
+    stop_hold_time: 0.2         # s cho Open_Palm (DỪNG) – ngắn để dừng nhanh
+    none_hold_time: 0.4         # s không thấy tay mới đổi sang None
+    wave_hold_time: 0.15        # Wave đã là kết quả theo thời gian -> giữ ngắn
+    vote_ratio: 0.7             # >= 70 % khung trong cửa sổ phải cùng nhãn
+    min_frames: 2
+    # ---- vẫy tay (bàn tay xoè dao động ngang)
+    wave_enabled: true
+    wave_window: 1.5            # s
+    wave_min_swings: 3          # số nhịp qua lại tối thiểu (phải-trái-phải = 3)
+    wave_min_amplitude: 0.06    # biên độ mỗi nhịp (tỉ lệ bề ngang ảnh)
+    wave_latch: 1.0             # s giữ kết quả Wave sau lần phát hiện cuối
+    # ---- hiển thị / topic
+    show_window: true
+    window_scale: 1.0
+    window_position: ""         # "x,y" (vd "1000,0") – đặt cửa sổ cạnh Gazebo khi quay video; trống = tự động
+    publish_image: false        # true: /gesture/image (xem trên RViz2 / rqt_image_view)
+    gesture_topic: "/detected_gesture"
+    state_topic: "/robot_behavior/state"
+
+robot_behavior_node:
+  ros__parameters:
+    gesture_topic: "/detected_gesture"
+    cmd_vel_topic: "/cmd_vel"
+    odom_topic: "/odom"
+    scan_topic: "/scan"
+    state_topic: "/robot_behavior/state"
+    control_rate: 20.0
+    # ---- an toàn / chống kích hoạt liên tục
+    signal_timeout: 1.0         # s không có /detected_gesture -> DỪNG (mất tín hiệu điều khiển)
+    selection_timeout: 15.0     # s: đã chọn mà không xác nhận -> huỷ lựa chọn
+    cooldown: 1.0               # s: cùng một cử chỉ lệnh không kích hoạt lại trong khoảng này
+    wave_requires_confirm: true # true: vẫy tay = CHỌN chào, cần ngón cái (đúng yêu cầu "chỉ thực hiện
+                                # sau khi xác nhận"); false: vẫy tay -> chào lại ngay
+    use_scan_safety: true
+    obstacle_stop_distance: 0.40  # m (tính từ tâm LiDAR) theo hướng đang chạy
+    obstacle_half_angle: 0.6      # rad, nửa góc quạt kiểm tra (~34°)
+    stall_timeout: 4.0          # s (giờ mô phỏng) ra lệnh chạy mà odom không đổi -> kẹt / mất odom, dừng
+    odom_timeout: 1.0           # s (giờ thực) – odom cũ hơn coi như mất
+    max_lin_acc: 0.5            # m/s^2
+    max_ang_acc: 2.0            # rad/s^2
+    # ---- chuẩn bị: undock + chạy ra giữa sân (chỉ khi robot đang ở dock)
+    auto_undock: true
+    dock_wait: 8.0
+    undock_timeout: 90.0
+    setup_forward: 1.0          # m
+    setup_speed: 0.2            # m/s
+    # ---- hành vi
+    greet_angle: 0.6            # rad mỗi bên (~34°)
+    greet_speed: 1.0            # rad/s
+    greet_repeats: 2.0          # số lần trái-phải
+    fb_distance: 0.35           # m
+    fb_speed: 0.2               # m/s
+    fb_repeats: 4.0             # tiến-lùi 4 lần
+    circle_radius: 0.5          # m
+    circle_speed: 0.15          # m/s  (ω = v/r = 0.3 rad/s, 1 vòng ~21 s)
+    circle_laps: 1.0
+    pause: 0.3                  # s nghỉ giữa các đoạn
+    save_results: true          # ~/tb4_results/gesture_<thời_gian>/events.csv, odom.csv

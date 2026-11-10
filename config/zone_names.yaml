@@ -1,0 +1,42 @@
+# Bài 7 – Tên có nghĩa cho các khu vực (Semantic Mapping), dùng bởi scripts/zone_segmentation.py.
+#
+# Mỗi mục: anchor = một điểm (x, y – frame map, mét) nằm TRONG khu vực muốn đặt tên. Khu vực chứa điểm
+# neo nhận tên + các tên gọi khác (aliases) – người dùng nói tên nào cũng được. Khu vực không có điểm neo
+# giữ tên "Khu vực <ID>". Mọi khu vực LUÔN gọi được bằng ID: "khu vực A", "khu B", "vùng C" ...
+# Dùng điểm neo (thay vì ghi thẳng "A = Phòng học") để tên vẫn đúng chỗ khi bạn tạo lại bản đồ và thứ tự
+# chữ cái A, B, C ... thay đổi.
+#
+# Sau khi sửa file này: ros2 run tb4_lab04 zone_segmentation.py   (cập nhật maps/zones.yaml + ảnh)
+# Lấy toạ độ một điểm: ros2 run tb4_lab04 goal_recorder.py rồi bấm "Publish Point" trên RViz2.
+#
+# Chọn tên KHÁC NHAU RÕ khi đọc lên (khác cả âm đầu, không chỉ khác dấu / âm cuối): "phòng học" – "phòng họp"
+# là cặp tên tệ cho điều khiển bằng giọng nói.
+#
+# yaw (tuỳ chọn, rad): hướng robot khi tới nơi. Bỏ trống = hướng di chuyển tới đích (không phải xoay thêm).
+
+zones:
+  - anchor: [-6.3, 7.9]          # phòng lớn góc trên-trái
+    name: "Phòng học"
+    aliases: ["lớp học", "phòng lớp"]
+
+  - anchor: [-2.5, 1.2]          # khu trung tâm có dock (điểm xuất phát)
+    name: "Sảnh chính"
+    aliases: ["sảnh", "trạm sạc", "chỗ sạc", "vị trí xuất phát"]
+
+  - anchor: [-6.3, -4.4]         # khu lớn bên trái-dưới
+    name: "Phòng thí nghiệm"
+    aliases: ["phòng lab", "phòng thực hành", "lab"]
+
+  - anchor: [7.0, -2.2]          # phòng bên phải
+    # KHÔNG đặt "Phòng họp": chỉ khác "Phòng học" một âm cuối -> nhận dạng giọng nói nhầm (đã gặp khi kiểm thử
+    # Whisper). Tên dùng cho lệnh nói phải khác nhau rõ về âm.
+    name: "Phòng hội nghị"
+    aliases: ["phòng hội thảo", "hội trường"]
+
+  - anchor: [7.1, 7.9]           # hành lang chéo bậc thang góc trên-phải
+    name: "Hành lang"
+    aliases: ["hành lang chéo", "hành lang trên"]
+
+  - anchor: [0.0, -7.6]          # phòng dưới giữa
+    name: "Thư viện"
+    aliases: ["phòng đọc", "phòng đọc sách"]

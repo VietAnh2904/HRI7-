@@ -1,0 +1,8 @@
+# tb4_lab04 – chỉ dùng cho explore.launch.py khi fast:=true (mặc định).
+# safety_override "full" của Create 3: tốc độ bánh xe tối đa 0.46 m/s (mặc định 0.306 m/s), bỏ giới hạn
+# lùi và phản xạ cliff (world mê cung phẳng, không có chỗ hụt chân). Đặt LÚC KHỞI ĐỘNG, chỉ node
+# motion_control đọc (khoá /**/motion_control). File này nạp SAU create3_no_cliff_reflex.yaml nên ghi đè
+# giá trị "backup_only" ở đó.
+/**/motion_control:
+  ros__parameters:
+    safety_override: "full"

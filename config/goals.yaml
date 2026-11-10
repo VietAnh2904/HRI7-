@@ -1,0 +1,31 @@
+# Các điểm mục tiêu (Phần 2 của bài) cho scripts/waypoint_navigator.py.
+#
+# Frame: map (bản đồ maps/map.yaml của tuần trước). Đơn vị: mét, yaw tính bằng RADIAN
+# (0 = hướng +x, 1.5708 = +y, 3.1416 = -x, -1.5708 = -y). Có thể ghi yaw_deg thay cho yaw.
+#
+# Cách lấy toạ độ của BẠN (thay các giá trị mẫu dưới đây):
+#   ros2 run tb4_lab04 goal_recorder.py          # bấm "Publish Point" trên RViz2 -> in (x, y)
+#                                                # hoặc nhấn Enter -> lấy pose hiện tại từ /amcl_pose
+#   ros2 run tb4_lab04 check_goals.py --plot     # kiểm tra goal hợp lệ + vẽ ảnh cho báo cáo
+#
+# Toạ độ mẫu dưới đây đã được kiểm tra bằng check_goals.py trên maps/map.yaml của repo:
+# cách tường >= 0.6 m, đi tới được từ điểm xuất phát, và lúc tới nơi camera (FOV 60°) nhìn thẳng vào
+# vật thể trong config/objects.yaml.
+
+# Pose ban đầu cho AMCL = vị trí robot lúc spawn (đang đỗ trong dock). Chỉ được dùng khi robot còn
+# trong dock (xem tham số initial_pose_mode của waypoint_navigator.py).
+initial_pose: {x: 0.0, y: 0.0, yaw: 0.0}
+
+goals:
+  - name: "Phòng trên-trái (xe hơi)"
+    x: -5.50
+    y: 5.75
+    yaw: 2.63
+  - name: "Khu dưới-trái (người, ghế)"
+    x: -6.00
+    y: -2.60
+    yaw: -1.5708
+  - name: "Hành lang phải (trụ cứu hoả, người, bình chữa cháy)"
+    x: 5.30
+    y: -2.00
+    yaw: 0.0

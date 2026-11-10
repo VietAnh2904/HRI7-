@@ -1,0 +1,26 @@
+# Bài 7 – Ví dụ phân vùng VẼ TAY (thay cho watershed tự động):
+#   ros2 run tb4_lab04 zone_segmentation.py --manual config/zones_manual.yaml
+#
+# Mỗi vùng là một đa giác (toạ độ frame map, mét; >= 3 đỉnh, theo thứ tự quanh biên). Chỉ phần TRỐNG của bản
+# đồ nằm trong đa giác thuộc vùng; hai đa giác chồng nhau thì vùng khai báo trước được giữ phần chung.
+# ID A, B, C ... theo thứ tự đọc (trên -> dưới, trái -> phải) – không theo thứ tự trong file.
+# Điểm đích của mỗi vùng vẫn được chọn tự động (đủ rộng, tới được, gần tâm vùng).
+# Lấy toạ độ góc: ros2 run tb4_lab04 goal_recorder.py + "Publish Point" trên RViz2, hoặc đọc trên ảnh
+# maps/map_zones.png (trục có chia mét).
+
+zones:
+  - name: "Phòng học"
+    aliases: ["lớp học"]
+    polygon: [[-10.0, 5.0], [-1.0, 5.0], [-1.0, 10.0], [-10.0, 10.0]]
+
+  - name: "Sảnh chính"
+    aliases: ["sảnh", "trạm sạc"]
+    polygon: [[-5.0, -5.0], [1.2, -5.0], [1.2, 7.0], [-5.0, 7.0]]
+
+  - name: "Phòng thí nghiệm"
+    aliases: ["phòng lab"]
+    polygon: [[-10.0, -10.0], [-3.2, -10.0], [-3.2, 0.0], [-10.0, 0.0]]
+
+  - name: "Phòng hội nghị"
+    aliases: ["hội trường"]
+    polygon: [[4.2, -5.0], [10.0, -5.0], [10.0, 0.0], [4.2, 0.0]]

@@ -1,0 +1,31 @@
+# Tham số cho scripts/yolo_detector.py (Phần 4) – nạp bởi launch/yolo.launch.py.
+# Chạy tay cũng được: ros2 run tb4_lab04 yolo_detector.py --ros-args --params-file <file này>
+yolo_detector:
+  ros__parameters:
+    # Camera RGB của TurtleBot 4 trong mô phỏng: 320x240, rgb8, 30 Hz (OAK-D, FOV ngang 60°)
+    image_topic: /oakd/rgb/preview/image_raw
+
+    # Model: yolo11n.pt (mặc định, nhẹ nhất của YOLO11) | yolov8n.pt | yolo11s.pt (chính xác hơn, chậm hơn)
+    #        yolov8s-worldv2.pt (YOLO-World: tự đặt tên lớp ở world_classes, nhận được "fire extinguisher"
+    #        – lớp không có trong COCO; cần thêm gói CLIP, ultralytics tự cài khi có Internet)
+    # Tên trần -> tải 1 lần vào weights_dir.
+    model: yolo11n.pt
+    weights_dir: ~/.cache/tb4_lab04/models
+    world_classes: "person,car,chair,fire hydrant,fire extinguisher"
+
+    conf: 0.35          # ngưỡng độ tự tin – ảnh mô phỏng 320x240 nhỏ, đặt cao quá sẽ bỏ sót
+    iou: 0.5
+    imgsz: 640          # phóng ảnh 320x240 lên 640 khi suy luận -> nhận vật nhỏ/xa tốt hơn (chậm hơn ~3x)
+    device: ""          # "" = tự chọn (GPU nếu có CUDA), "cpu", "0" (GPU số 0)
+    classes: ""         # lọc lớp, ví dụ "person,car,chair" ("" = mọi lớp)
+
+    max_rate: 5.0       # số ảnh/giây tối đa đưa qua YOLO (giữ CPU cho Gazebo + Nav2); 0 = không giới hạn
+    cpu_threads: 0      # số luồng CPU cho PyTorch; 0 = một nửa số lõi
+
+    show_window: true   # cửa sổ OpenCV (tự tắt nếu không có màn hình)
+    window_scale: 2.0   # phóng cửa sổ x2 cho dễ nhìn trong video
+    publish_annotated: true   # /yolo/image_annotated (xem trên RViz2, panel "YOLO")
+    print_period: 1.0   # giây giữa 2 lần in danh sách vật thể (lớp mới xuất hiện -> in ngay)
+
+    save_results: true  # ~/tb4_results/yolo_<thời_gian>/: detections.csv, first_<lớp>.jpg, best_<lớp>.jpg
+    results_dir: ""

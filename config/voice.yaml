@@ -1,0 +1,27 @@
+# Bài 7 – tham số của 2 node điều khiển bằng giọng nói (voice.launch.py nạp file này).
+# Tham số launch (asr_engine, mic_device, use_grammar, speak, zones_file ...) ghi đè các giá trị ở đây.
+
+tb4_speech_recognizer:
+  ros__parameters:
+    engine: vosk                 # vosk | whisper
+    language: vi                 # Whisper
+    vosk_model: ""               # trống = ~/.cache/tb4_lab04/vosk-model-small-vn-0.4 (install_voice_deps.sh)
+    whisper_model: small         # tiny | base | small | medium | large-v3 | đường dẫn thư mục model
+    whisper_prompt: names        # names = tên khu vực | none | chuỗi tuỳ ý (KHÔNG ghi câu lệnh mẫu – Whisper sẽ chép lại)
+    use_grammar: false           # Vosk: chỉ nghe câu lệnh + tên khu vực (chính xác hơn, nhưng "khu vực Z" -> [unk])
+    device: ""                   # micro: tên hoặc số (xem speech_recognizer_node.py --list-devices)
+    sample_rate: 16000
+    vad_threshold: 0.0           # 0 = tự đo nhiễu nền 1 s đầu (Whisper)
+    min_speech: 0.3
+    max_speech: 8.0
+    end_silence: 0.7
+
+tb4_voice_navigator:
+  ros__parameters:
+    sim_time: true
+    undock: true
+    goal_timeout: 240.0          # giây (giờ mô phỏng) mỗi chặng
+    max_retries: 1
+    pause_at_waypoint: 1.0
+    preview_route: true          # vẽ đường dự kiến (ComputePathToPose) lên /voice/planned_route
+    speak: false                 # đọc phản hồi bằng espeak-ng
